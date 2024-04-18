@@ -14,7 +14,6 @@ import principal.entities.Materia;
 import principal.entities.Profesor;
 import principal.entities.ValoracionMateria;
 
-
 public class SuperControlador {
 
 	private static String nombreTabla = "";
@@ -34,12 +33,15 @@ public class SuperControlador {
 	}
 
 	public List<? extends Entidad> findAll() {
-		return (List<Entidad>) getEntityManager()
-				.createNativeQuery("SELECT * FROM " + nombreTabla + ";", this.tipoEntidad).getResultList();
+		return (List<Entidad>) getEntityManager().createNativeQuery("SELECT * FROM " + nombreTabla, this.tipoEntidad)
+				.getResultList();
 
 	}
-	
-	
+
+	public static Estudiante obtenerEstudiantePorId(int idEstudiante) {
+		return  (Estudiante) getEntityManager().createNativeQuery("SELECT * FROM " + nombreTabla + " where id = " + idEstudiante).getSingleResult();
+
+	}
 
 	protected static EntityManager getEntityManager() {
 		if (em == null) {
@@ -54,14 +56,12 @@ public class SuperControlador {
 					"SELECT * FROM valoracionmateria where " + e.getId() + " = idEstudiante and " + p.getId()
 							+ " = idProfesor and " + m.getId() + " = idMateria and " + nota + " = valoracion;",
 					ValoracionMateria.class).getSingleResult();
-		}
-		catch (NoResultException ex) {
+		} catch (NoResultException ex) {
 			return null;
 		}
-		
+
 	}
-	
-	
+
 	public static void insert(Estudiante e, Profesor p, Materia m, Integer nota, Date fehca) {
 		ValoracionMateria v = new ValoracionMateria();
 		v.setIdEstudiante(e.getId());
@@ -69,41 +69,35 @@ public class SuperControlador {
 		v.setIdProfesor(p.getId());
 		v.setValoracion(nota);
 		v.setFecha(fehca);
-		
-		
+
 		em.getTransaction().begin();
 		em.persist(v);
 		em.getTransaction().commit();
-		
+
 	}
-	
-	
+
 	public static void update(Estudiante e, Profesor p, Materia m, Integer nota, Date fecha) {
 		ValoracionMateria v = obtenerValoracionSinNota(e, p, m);
-		
+
 		v.setValoracion(nota);
 		v.setFecha(fecha);
-		
+
 		em.getTransaction().begin();
 		em.persist(v);
 		em.getTransaction().commit();
-		
-		
-		
-		
+
 	}
-	
+
 	public static ValoracionMateria obtenerValoracionSinNota(Estudiante e, Profesor p, Materia m) {
 		try {
-			return (ValoracionMateria) getEntityManager().createNativeQuery(
-					"SELECT * FROM valoracionmateria where " + e.getId() + " = idEstudiante and " + p.getId()
-							+ " = idProfesor and " + m.getId() + " = idMateria;",
-					ValoracionMateria.class).getSingleResult();
-		}
-		catch (NoResultException ex) {
+			return (ValoracionMateria) getEntityManager()
+					.createNativeQuery("SELECT * FROM valoracionmateria where " + e.getId() + " = idEstudiante and "
+							+ p.getId() + " = idProfesor and " + m.getId() + " = idMateria;", ValoracionMateria.class)
+					.getSingleResult();
+		} catch (NoResultException ex) {
 			return null;
 		}
-		
+
 	}
 
 	public static Entidad getPrimero() {

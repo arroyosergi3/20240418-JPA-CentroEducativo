@@ -1,13 +1,19 @@
 package principal.views;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.ResourceBundle.Control;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import principal.controllers.ControladorEstudiantes;
+import principal.controllers.DatosDeTabla;
 import principal.controllers.SuperControlador;
 import principal.entities.Estudiante;
 
@@ -16,43 +22,55 @@ public class PanelTabla extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTable tableAlumnos;
-
+	private DefaultTableModel dtm = null;
+	private Object datosEnTabla[][] = DatosDeTabla.getDatosDeTabla();
+	private String titulosEnTabla[] = DatosDeTabla.getTitulosColumnas();
+	
 	/**
 	 * Create the panel.
 	 */
 	public PanelTabla() {
 		setLayout(new BorderLayout(0, 0));
 		
+		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		add(splitPane, BorderLayout.CENTER);
+		this.dtm = getDefaultTableModelNoEditable();
+		tableAlumnos = new JTable(dtm);
+		JScrollPane scrollPane = new JScrollPane(tableAlumnos);
 		
-		tableAlumnos = new JTable();
+		tableAlumnos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				int indiceFilaSel = tableAlumnos.getSelectedRow();
+				int idEstudiante = (int) datosEnTabla[1][indiceFilaSel];
+				Estudiante estudianteSeleccionado = ControladorEstudiantes.getInstance().obtenerEstudiantePorId(idEstudiante);
+				
+				
+				
+			}
+		});
 		splitPane.setLeftComponent(tableAlumnos);
-
+	}
+	
+	private DefaultTableModel getDefaultTableModelNoEditable () {
+		DefaultTableModel dtm = new DefaultTableModel(datosEnTabla, titulosEnTabla) {
+			
+			/**
+			 * La sobreescritura de este método nos permite controlar qué celdas queremos que sean editables
+			 */
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if (column != 1) {
+					return false;
+				}
+				return true;
+			}
+		};
+		return dtm;
 	}
 	
 	
-	
-	public static Object[][] getDatosDeTabla() {
-		// Obtengo todas las personas
-		List<Estudiante> estudiantes = 
-		// Preparo una estructura para pasar al constructor de la JTable
-		Object[][] datos = new Object[estudiantes.size()][8];
-		// Cargo los datos de la lista de personas en la matriz de los datos
-		for (int i = 0; i < personas.size(); i++) {
-			Persona persona = personas.get(i);
-			datos[i][0] = persona.getId();
-			datos[i][1] = persona.getNombre();
-			datos[i][2] = persona.getPrimerApellido();
-			datos[i][3] = persona.getSegundoApellido();
-			datos[i][4] = persona.getFechaNacimiento();
-			datos[i][5] = persona.getEdad();
-			datos[i][6] = persona.getActivo();
-			datos[i][7] = persona.getProvincia();
-		}
-		
-		return datos;
-	}
-
 }

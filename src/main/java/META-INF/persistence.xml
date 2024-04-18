@@ -2,13 +2,15 @@
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="CentroEducativo"
 		transaction-type="RESOURCE_LOCAL">
-		<class>Principal.entities.Curso</class>
-		<class>Principal.entities.Estudiante</class>
-		<class>Principal.entities.Materia</class>
-		<class>Principal.entities.Profesor</class>
-		<class>Principal.entities.Sexo</class>
-		<class>Principal.entities.ValoracionMateria</class>
-		<class>Principal.entities.Entidad</class>
+		<class>principal.entities.Curso</class>
+		<class>principal.entities.Estudiante</class>
+		<class>principal.entities.Materia</class>
+		<class>principal.entities.Profesor</class>
+		<class>principal.entities.Sexo</class>
+		<class>principal.entities.ValoracionMateria</class>
+		<class>principal.entities.Entidad</class>
+		<class>principal.entities.DatosDeTabla</class>
+		
 
 
 		<properties>

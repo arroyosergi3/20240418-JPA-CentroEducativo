@@ -14,6 +14,7 @@ public class Estudiante extends Entidad{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	@Column(name = "sexo_id")
 	private int idSexo;
 	@Column(name="apellido1")
 	private String apellido_1;
@@ -21,7 +22,10 @@ public class Estudiante extends Entidad{
 	@Column(name="apellido2")
 	private String apellido_2;
 	
-	private String nombre, dni, direccion, mail, telefono, colorFavorito;
+	private String nombre, dni, direccion, telefono, colorFavorito;
+	@Column(name = "email")
+	private String mail;
+	
 	private byte[] imagen;
 	
 	

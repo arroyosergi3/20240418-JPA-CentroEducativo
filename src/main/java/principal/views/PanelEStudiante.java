@@ -1,6 +1,7 @@
 package principal.views;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import principal.controllers.ControladorSexo;
 import principal.entities.Estudiante;
@@ -12,7 +13,6 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -31,8 +31,7 @@ public class PanelEStudiante extends JPanel {
 	private JTextField jtfTelefono;
 	private JTextField jtfColorFavorito;
 	JComboBox <Sexo> jcbSexo ;
-	byte[] imagen;
-	private int anchoImagen, altoImagen;
+	private JScrollPane jspImagen;
 	
 
 	/**
@@ -43,7 +42,7 @@ public class PanelEStudiante extends JPanel {
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
@@ -211,52 +210,49 @@ public class PanelEStudiante extends JPanel {
 		gbc_lblImagen.gridy = 9;
 		add(lblImagen, gbc_lblImagen);
 		
-	
+		 jspImagen = new JScrollPane();
+		GridBagConstraints gbc_jspImagen = new GridBagConstraints();
+		gbc_jspImagen.fill = GridBagConstraints.BOTH;
+		gbc_jspImagen.gridx = 1;
+		gbc_jspImagen.gridy = 9;
+		add(jspImagen, gbc_jspImagen);
+        
+		 setImagen(e.getImagen(), e);
 		
-		
-		
-		
-
 	}
-	public void setImagen(byte[] img) {
+	public void setImagen(byte[] img, Estudiante e) {
 
-        if (img != null && img.length > 0) {
+        if (img == null) {
+//        	System.out.println("Se recibe la imagen bien");
+        	JLabel lblicono = new JLabel("Sin Icono");
 
-            this.imagen = img;
+            this.jspImagen.setViewportView(lblicono);
 
-            ImageIcon icono = new ImageIcon(this.imagen);
 
-            this.anchoImagen = icono.getIconWidth();
+        }
+        mostrarImagen(e);
 
-            this.altoImagen = icono.getIconHeight();
 
-        } else {
-
-            this.imagen = null;
-
-            JLabel lblicono = new JLabel("Sin Icono");
-
-            this.scrollPane.setViewportView(lblicono);
-
-            this.anchoImagen = 0;
-
-            this.altoImagen = 0;
         }
 
-        mostrarImagen();
 
-    }
+    
 	
-	private void mostrarImagen() {
-        if (imagen != null && imagen.length > 0) {
-            ImageIcon icono = new ImageIcon(imagen);
+	private void mostrarImagen(Estudiante e) {
+        if (e.getImagen()!= null && e.getImagen().length > 0) {
+//        	System.out.println(e.getImagen());
+            ImageIcon icono = new ImageIcon(e.getImagen());
+            
             JLabel lblIcono = new JLabel(icono);
-            this.scrollPane.setViewportView(lblIcono);
+            this.jspImagen.setViewportView(lblIcono);
+//            System.out.println("Se intenta cagar la imagen bien");
         } else {
             JLabel lblIcono = new JLabel("Sin imagen");
-            scrollPane.setViewportView(lblIcono);
+            this.jspImagen.setViewportView(lblIcono);
         }
-
+        
+        this.revalidate();
+		 this.repaint();
     }
 	
 	
@@ -267,10 +263,6 @@ public class PanelEStudiante extends JPanel {
 		}
 
 	}
-	
-	
-	
-	
 	
 	public void seleccionarSexo(int idSexo) {
 		for (int i = 0; i < this.jcbSexo.getItemCount(); i++) {

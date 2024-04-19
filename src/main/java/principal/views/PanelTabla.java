@@ -45,14 +45,23 @@ public class PanelTabla extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				int indiceFilaSel = tableAlumnos.getSelectedRow();
-				int idEstudiante = (int) datosEnTabla[1][indiceFilaSel];
-				Estudiante estudianteSeleccionado = ControladorEstudiantes.getInstance().obtenerEstudiantePorId(idEstudiante);
-				
-				
+				Object value = datosEnTabla[indiceFilaSel][0];
+
+				Estudiante estSeleccionado = ControladorEstudiantes.getInstance().obtenerEstudiantePorId((Integer)value);
+				ControladorEstudiantes.getInstance().mostrarEstudiante(estSeleccionado);
+				PanelEStudiante panelEstudiante = new PanelEStudiante(estSeleccionado);
+				JScrollPane scrollPane2 = new JScrollPane(panelEstudiante);
+				splitPane.setRightComponent(scrollPane2);
+				splitPane.setResizeWeight(0.2);
 				
 			}
 		});
-		splitPane.setLeftComponent(tableAlumnos);
+		
+		
+		
+		
+		splitPane.setLeftComponent(scrollPane);
+		
 	}
 	
 	private DefaultTableModel getDefaultTableModelNoEditable () {
@@ -71,6 +80,10 @@ public class PanelTabla extends JPanel {
 		};
 		return dtm;
 	}
+	
+	
+	
+	
 	
 	
 }

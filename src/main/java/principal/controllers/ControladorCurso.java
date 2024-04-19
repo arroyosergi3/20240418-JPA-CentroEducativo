@@ -30,14 +30,14 @@ public class ControladorCurso extends SuperControlador {
 
 	
 	
-	public static Curso getPrimero() {
+	public Curso getPrimero() {
 		Query q  = em.createNativeQuery("Select min(id) from "  + nombreTabla);
 		int primerId = (int) q.getSingleResult();
 		Curso c = em.find(Curso.class, primerId);
 		return c;
 	}
 
-	public static Curso getUltimo() {
+	public Curso getUltimo() {
 		Query q  = em.createNativeQuery("Select max(id) from "  + nombreTabla);
 		int primerId = (int) q.getSingleResult();
 		Curso c = em.find(Curso.class, primerId);
@@ -45,7 +45,7 @@ public class ControladorCurso extends SuperControlador {
 	}
 
 	
-	public static Curso getFabricanteSiguienteAnterior(int id) {
+	public Curso getFabricanteSiguienteAnterior(int id) {
 		return null;
 
 
@@ -54,7 +54,7 @@ public class ControladorCurso extends SuperControlador {
 	
 	
 
-	public static Curso getEntidad(Connection conn, String sql) throws SQLException {
+	public Curso getEntidad(Connection conn, String sql) throws SQLException {
 		Statement s = conn.createStatement();
 		ResultSet rs = s.executeQuery(sql);
 		Curso o = null;
@@ -69,7 +69,7 @@ public class ControladorCurso extends SuperControlador {
 	}
 	
 	
-	public static List<Curso> getTodos(){
+	public List<Curso> getTodos(){
 		List<Curso> l = new ArrayList<Curso>();
 		
 

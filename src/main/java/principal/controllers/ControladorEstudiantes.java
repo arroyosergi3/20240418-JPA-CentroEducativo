@@ -33,7 +33,18 @@ public class ControladorEstudiantes extends SuperControlador {
 		return instance;
 	}
 	
+	public Estudiante obtenerEstudiantePorId(int idEstudiante) {
+		return  (Estudiante) getEntityManager().createNativeQuery("SELECT * FROM estudiante where id = " + idEstudiante, Estudiante.class).getSingleResult();
+
+	}
 	
+	
+	
+	public void mostrarEstudiante(Estudiante e) {
+		
+		
+		
+	}
 	
 
 	

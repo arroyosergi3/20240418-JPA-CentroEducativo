@@ -14,7 +14,7 @@ import principal.views.PanelTabla;
 public class Principal extends JFrame{
 
 	static Principal instance = null;
-	PanelTabla pt = new PanelTabla();
+	PanelTabla pt = PanelTabla.getInstance();
 	
 
 	public static Principal getInstance() {

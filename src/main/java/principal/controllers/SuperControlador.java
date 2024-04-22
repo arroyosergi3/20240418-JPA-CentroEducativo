@@ -25,7 +25,7 @@ public class SuperControlador {
 		this.tipoEntidad = tipoEntidad;
 	}
 
-	private void update(Entidad e) {
+	public void update(Entidad e) {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
 		em.merge(e);

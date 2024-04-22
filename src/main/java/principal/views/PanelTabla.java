@@ -25,6 +25,18 @@ public class PanelTabla extends JPanel {
 	private DefaultTableModel dtm = null;
 	private Object datosEnTabla[][] = DatosDeTabla.getDatosDeTabla();
 	private String titulosEnTabla[] = DatosDeTabla.getTitulosColumnas();
+	private static PanelTabla instance = null;
+	
+	public static PanelTabla getInstance() {
+		if (instance == null) {
+			instance = new PanelTabla();
+		}
+		
+		return instance;
+	}
+	
+	
+	
 	
 	/**
 	 * Create the panel.
@@ -64,6 +76,34 @@ public class PanelTabla extends JPanel {
 		
 	}
 	
+	public void actualizarTabla(Estudiante e) {
+	    // 1. Actualizar los datos en la matriz datosEnTabla
+	    datosEnTabla = DatosDeTabla.getDatosDeTabla(); // Suponiendo que obtienes los nuevos datos de alguna fuente
+	    int f = tableAlumnos.getSelectedRow();
+	    
+	    
+	    this.datosEnTabla[f][0] = e.getId();
+	    this.datosEnTabla[f][1] = e.getNombre();
+	    this.datosEnTabla[f][2] = e.getApellido_1();
+	    this.datosEnTabla[f][3] = e.getApellido_2();
+	    this.datosEnTabla[f][4] = e.getDni();
+	    this.datosEnTabla[f][5] = e.getDireccion();
+	    this.datosEnTabla[f][6] = e.getMail();
+	    this.datosEnTabla[f][7] = e.getTelefono();
+	    this.datosEnTabla[f][8] = e.getIdSexo();
+	    this.datosEnTabla[f][9] = e.getImagen();
+	    this.datosEnTabla[f][10] = e.getColorFavorito();
+	    
+
+	    // 3. Notificar a la tabla que los datos han sido actualizados
+	    dtm.fireTableDataChanged();
+	    
+
+	    
+	}
+
+	
+	
 	private DefaultTableModel getDefaultTableModelNoEditable () {
 		DefaultTableModel dtm = new DefaultTableModel(datosEnTabla, titulosEnTabla) {
 			
@@ -80,6 +120,15 @@ public class PanelTabla extends JPanel {
 		};
 		return dtm;
 	}
+
+	public Object[][] getDatosEnTabla() {
+		return datosEnTabla;
+	}
+
+	public void setDatosEnTabla(Object[][] datosEnTabla) {
+		this.datosEnTabla = datosEnTabla;
+	}
+	
 	
 	
 	
